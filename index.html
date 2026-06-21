@@ -5,201 +5,290 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#C98A2E">
+<meta name="theme-color" content="#E27222">
 <title>Ration List</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg: #FAF5EA;
+  :root {
+    --bg: #F9F7F3;
     --paper: #FFFFFF;
-    --ink: #2E2117;
-    --ink-soft: #7A6A57;
-    --turmeric: #C9821E;
-    --turmeric-deep: #A8650F;
-    --maroon: #8B3A3A;
-    --leaf: #5A7247;
-    --line: #E8DDC8;
-    --shadow: 0 2px 10px rgba(46,33,23,0.08);
+    --paper-soft: #F4F1EA;
+    --ink: #1C1917;
+    --ink-soft: #78716C;
+    --ink-faint: #A8A29E;
+    --amber: #E27222;
+    --amber-deep: #B45309;
+    --amber-light: #FEF3C7;
+    --maroon: #9F1239;
+    --maroon-light: #FFE4E6;
+    --leaf: #15803D;
+    --leaf-light: #DCFCE7;
+    --line: #E7E5DF;
+    --line-soft: #F0EEEA;
+    --shadow-sm: 0 2px 4px rgba(28, 25, 23, 0.04);
+    --shadow-md: 0 8px 24px rgba(28, 25, 23, 0.06);
+    --shadow-lg: 0 20px 40px rgba(28, 25, 23, 0.12);
+    --radius-xl: 24px;
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+    --font-main: 'Plus Jakarta Sans', sans-serif;
   }
-  *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
-  html,body{margin:0; padding:0; background:var(--bg); color:var(--ink);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  body{ padding-bottom: 116px; }
 
-  header{
-    background: linear-gradient(135deg, var(--turmeric), var(--turmeric-deep));
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  
+  html, body {
+    margin: 0; padding: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--font-main); -webkit-font-smoothing: antialiased;
+  }
+  body { padding-bottom: 130px; }
+  button, input, select { font-family: inherit; }
+  button { cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+  button:active { transform: scale(0.94); }
+
+  /* Premium Header */
+  header {
+    background: linear-gradient(135deg, #F59E0B 0%, var(--amber) 50%, var(--amber-deep) 100%);
     color: #fff;
-    padding: 18px 16px 22px;
-    border-radius: 0 0 22px 22px;
-    box-shadow: var(--shadow);
+    padding: 24px 20px 32px;
+    border-radius: 0 0 32px 32px;
+    box-shadow: 0 12px 36px rgba(226, 114, 34, 0.25);
     position: relative;
+    overflow: hidden;
   }
-  header h1{ margin:0; font-size: 22px; font-weight: 800; letter-spacing: 0.3px; }
-  header .sub{ font-size: 13px; opacity: 0.92; margin-top: 4px; }
-  .header-btns{ position:absolute; top:16px; right:14px; display:flex; gap:8px; }
-  .hbtn{
-    background: rgba(255,255,255,0.18);
-    border: 1px solid rgba(255,255,255,0.4);
-    color:#fff; font-size: 15px; font-weight:600;
-    width: 36px; height: 36px; border-radius: 10px;
-    display:flex; align-items:center; justify-content:center;
+  header::before {
+    content: ""; position: absolute; top: -50%; left: -20%; width: 100%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+    transform: rotate(30deg); pointer-events: none;
   }
-  .hbtn:active{ background: rgba(255,255,255,0.3); }
+  header h1 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; display: flex; align-items: center; gap: 10px; }
+  header .sub { font-size: 14px; opacity: 0.9; margin-top: 6px; font-weight: 500; }
+  
+  .header-btns { position: absolute; top: 24px; right: 20px; display: flex; gap: 10px; z-index: 2; }
+  .hbtn {
+    background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #fff; font-size: 16px; width: 42px; height: 42px; border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px);
+  }
+  .hbtn:active { background: rgba(255, 255, 255, 0.3); }
 
-  .search-wrap{ padding: 14px 14px 0; }
-  .search-box{
-    background: var(--paper); border:1px solid var(--line);
-    border-radius: 14px; padding: 11px 14px; font-size:15px;
-    width:100%; color: var(--ink); box-shadow: var(--shadow);
+  /* Modern Search */
+  .search-wrap { padding: 20px 16px 0; position: relative; z-index: 10; transform: translateY(-24px); }
+  .search-box {
+    background: var(--paper); border: 1px solid var(--line);
+    border-radius: var(--radius-lg); padding: 16px 20px; font-size: 15px; font-weight: 500;
+    width: 100%; color: var(--ink); box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
   }
-  .search-box:focus{ outline:2px solid var(--turmeric); }
+  .search-box:focus { outline: none; border-color: var(--amber); box-shadow: 0 0 0 4px rgba(226, 114, 34, 0.15); }
+  .search-box::placeholder { color: var(--ink-faint); font-weight: 400; }
 
-  main{ padding: 12px 14px 0; }
+  main { padding: 0 16px; animation: fadeUp 0.4s ease forwards; }
 
-  .category{
-    background: var(--paper); border-radius: 16px; margin-bottom: 12px;
-    box-shadow: var(--shadow); overflow:hidden; border:1px solid var(--line);
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-  .cat-head{
-    display:flex; align-items:center; justify-content:space-between;
-    padding: 15px 16px; cursor:pointer; user-select:none;
-  }
-  .cat-head-left{ display:flex; align-items:center; gap:10px; }
-  .cat-emoji{ font-size: 20px; }
-  .cat-title{ font-weight:700; font-size: 16px; }
-  .cat-count{ font-size: 12.5px; color: var(--ink-soft); margin-top:2px; }
-  .chevron{ width: 22px; height:22px; flex-shrink:0; transition: transform 0.2s ease; color: var(--turmeric-deep); }
-  .category.open .chevron{ transform: rotate(180deg); }
 
-  .cat-body{ display:none; border-top: 1px solid var(--line); }
-  .category.open .cat-body{ display:block; }
+  /* Category Cards */
+  .category {
+    background: var(--paper); border-radius: var(--radius-xl); margin-bottom: 16px;
+    box-shadow: var(--shadow-sm); overflow: hidden; border: 1px solid var(--line-soft);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .category.open { box-shadow: var(--shadow-md); border-color: var(--line); }
+  
+  .cat-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 20px; cursor: pointer; user-select: none;
+  }
+  .cat-head:active { background: var(--paper-soft); }
+  .cat-head-left { display: flex; align-items: center; gap: 14px; }
+  .cat-emoji {
+    width: 48px; height: 48px; flex-shrink: 0; font-size: 24px;
+    border-radius: 14px; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--amber-light), #FDF5E6);
+  }
+  .cat-title { font-weight: 700; font-size: 17px; letter-spacing: -0.3px; color: var(--ink); }
+  .cat-count { font-size: 13px; color: var(--ink-soft); margin-top: 4px; font-weight: 500; }
+  .chevron { width: 22px; height: 22px; flex-shrink: 0; transition: transform 0.3s ease; color: var(--ink-faint); }
+  .category.open .chevron { transform: rotate(180deg); color: var(--amber); }
 
-  .item-row{ border-bottom: 1px solid var(--line); padding: 12px 16px; }
-  .item-row:last-child{ border-bottom:none; }
-  .item-row.checked{ background: #FBF3E2; }
+  .cat-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; }
+  .category.open .cat-body { max-height: 5000px; border-top: 1px solid var(--line-soft); }
 
-  .item-main{ display:flex; align-items:center; gap: 10px; }
-  .chk{ width: 24px; height:24px; flex-shrink:0; accent-color: var(--leaf); }
-  .item-info{ flex:1; min-width:0; }
-  .item-name{ font-size: 15.5px; font-weight:600; line-height:1.25; }
-  .item-brand{ font-size: 12.5px; color: var(--ink-soft); margin-top:1px; }
-  .last-ref{ font-size: 11.5px; color: var(--turmeric-deep); margin-top:2px; font-weight:600; }
-  .note-preview{ font-size: 11.5px; color: var(--leaf); margin-top:2px; font-style:italic; }
+  /* Item Rows */
+  .item-row { padding: 16px 20px; transition: background 0.2s ease; position: relative; }
+  .item-row:not(:last-child)::after {
+    content: ''; position: absolute; bottom: 0; left: 20px; right: 20px;
+    height: 1px; background: var(--line-soft);
+  }
+  .item-row.checked { background: linear-gradient(90deg, rgba(220,252,231,0.4), transparent); }
 
-  .qty-wrap{ display:flex; align-items:center; gap:6px; flex-shrink:0; }
-  .qty-input{
-    width: 50px; text-align:center; padding: 7px 4px;
-    border:1px solid var(--line); border-radius:8px; font-size:15px;
-    background: var(--bg); color: var(--ink);
+  .item-main { display: flex; align-items: center; gap: 14px; }
+  
+  /* Custom Checkbox */
+  .chk {
+    appearance: none; -webkit-appearance: none;
+    width: 26px; height: 26px; border: 2px solid var(--ink-faint);
+    border-radius: 8px; flex-shrink: 0; cursor: pointer;
+    position: relative; transition: all 0.2s ease;
+    background: var(--paper);
   }
-  .unit-select{
-    border:1px solid var(--line); border-radius:8px; padding:7px 2px;
-    font-size: 13px; background: var(--bg); color: var(--ink); max-width: 60px;
+  .chk:checked { background: var(--leaf); border-color: var(--leaf); }
+  .chk:checked::after {
+    content: ''; position: absolute; left: 8px; top: 4px;
+    width: 6px; height: 12px; border: solid white;
+    border-width: 0 2px 2px 0; transform: rotate(45deg);
   }
-  .expand-btn{
-    width:30px; height:30px; flex-shrink:0; border-radius:8px;
-    background: var(--bg); color: var(--ink-soft); font-size:15px;
-    display:flex; align-items:center; justify-content:center; border:1px solid var(--line);
-  }
-  .expand-btn.active{ background: var(--turmeric); color:#fff; border-color: var(--turmeric); }
 
-  .item-sub{ display:none; margin-top:10px; padding-top:10px; border-top:1px dashed var(--line); }
-  .item-sub.open{ display:block; }
-  .sub-row{ display:flex; gap:8px; margin-bottom:8px; }
-  .sub-field{ flex:1; }
-  .sub-field label{ display:block; font-size:11px; color: var(--ink-soft); margin-bottom:3px; font-weight:600; }
-  .sub-field input{
-    width:100%; padding: 8px 10px; border:1px solid var(--line); border-radius:8px;
-    font-size: 14px; background: var(--bg); color: var(--ink);
-  }
-  .del-btn-full{
-    width:100%; padding: 13px; border-radius: 10px; background:#F3E6E6; color: var(--maroon);
-    border: 1px solid #E0B8B8; font-size: 14.5px; font-weight:700;
-  }
-  .del-btn-full:active{ background:#EAD3D3; }
+  .item-info { flex: 1; min-width: 0; }
+  .item-name { font-size: 16px; font-weight: 700; color: var(--ink); letter-spacing: -0.2px; }
+  .item-brand { font-size: 13px; color: var(--ink-soft); margin-top: 2px; font-weight: 500; }
+  .last-ref { font-size: 12px; color: var(--amber-deep); margin-top: 4px; font-weight: 600; display: inline-block; background: var(--amber-light); padding: 2px 8px; border-radius: 6px; }
+  .note-preview { font-size: 12px; color: var(--leaf); margin-top: 4px; font-style: italic; font-weight: 500; }
 
-  .empty-cat{ padding: 16px; color: var(--ink-soft); font-size: 14px; text-align:center; }
+  .qty-wrap { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .qty-input {
+    width: 54px; text-align: center; padding: 10px 4px;
+    border: 1.5px solid var(--line); border-radius: var(--radius-sm); font-size: 15px;
+    background: var(--paper-soft); color: var(--ink); font-weight: 700;
+    transition: all 0.2s ease;
+  }
+  .qty-input:focus { outline: none; border-color: var(--amber); background: var(--paper); }
+  
+  .unit-select {
+    border: 1.5px solid var(--line); border-radius: var(--radius-sm); padding: 10px 4px;
+    font-size: 13px; background: var(--paper-soft); color: var(--ink); font-weight: 600;
+  }
+  
+  .expand-btn {
+    width: 36px; height: 36px; flex-shrink: 0; border-radius: var(--radius-sm);
+    background: var(--paper-soft); color: var(--ink-soft); font-size: 16px;
+    display: flex; align-items: center; justify-content: center; border: 1.5px solid var(--line);
+  }
+  .expand-btn.active { background: var(--amber); color: #fff; border-color: var(--amber); }
 
-  .fab{
-    position: fixed; right: 18px; bottom: 100px;
-    width: 58px; height: 58px; border-radius: 50%;
-    background: var(--leaf); color:#fff; font-size: 30px; font-weight:400;
-    box-shadow: 0 6px 16px rgba(90,114,71,0.4);
-    display:flex; align-items:center; justify-content:center; z-index: 50;
-    border: none; line-height:0;
+  .item-sub { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; opacity: 0; }
+  .item-sub.open { max-height: 300px; margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--line); opacity: 1; }
+  .sub-row { display: flex; gap: 10px; margin-bottom: 12px; }
+  .sub-field { flex: 1; }
+  .sub-field label { display: block; font-size: 12px; color: var(--ink-soft); margin-bottom: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .sub-field input {
+    width: 100%; padding: 12px; border: 1.5px solid var(--line); border-radius: var(--radius-sm);
+    font-size: 15px; background: var(--paper-soft); color: var(--ink); font-weight: 500;
   }
-  .fab:active{ transform: scale(0.94); }
+  .sub-field input:focus { outline: none; border-color: var(--amber); background: var(--paper); }
+  
+  .del-btn-full {
+    width: 100%; padding: 14px; border-radius: var(--radius-sm); background: var(--maroon-light); color: var(--maroon);
+    border: 1px solid rgba(159, 18, 57, 0.2); font-size: 15px; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 8px;
+  }
 
-  .bottom-bar{
-    position: fixed; left:0; right:0; bottom:0; z-index: 40;
-    background: var(--paper); border-top: 1px solid var(--line);
-    padding: 10px 16px calc(12px + env(safe-area-inset-bottom));
-    display:flex; align-items:center; gap: 12px;
-    box-shadow: 0 -4px 14px rgba(46,33,23,0.08);
-  }
-  .selected-count{ font-size: 12.5px; color: var(--ink-soft); white-space:nowrap; line-height:1.3; }
-  .selected-count b{ color: var(--ink); font-size:15px; display:block; }
-  .selected-count .total-price{ color: var(--maroon); font-weight:700; font-size:13px; }
-  .send-btn{
-    flex:1; background: var(--maroon); color:#fff; border:none;
-    border-radius: 14px; padding: 14px; font-size: 15.5px; font-weight:700;
-    display:flex; align-items:center; justify-content:center; gap:8px;
-  }
-  .send-btn:active{ background:#732e2e; }
-  .send-btn:disabled{ background:#C9BBAE; }
+  .empty-cat { padding: 32px 16px; color: var(--ink-faint); font-size: 15px; text-align: center; font-weight: 500; }
 
-  .self-btn{
-    flex-shrink:0; width: 50px; background: var(--bg); color: var(--ink);
-    border: 1px solid var(--line); border-radius: 14px; font-size: 20px;
+  /* Floating Action Button */
+  .fab {
+    position: fixed; right: 24px; bottom: 124px;
+    width: 64px; height: 64px; border-radius: 20px;
+    background: linear-gradient(135deg, var(--leaf), #065F46);
+    color: #fff; font-size: 32px; font-weight: 300;
+    box-shadow: 0 12px 28px rgba(21, 128, 61, 0.35);
+    display: flex; align-items: center; justify-content: center; z-index: 50;
+    border: none;
   }
-  .self-btn:active{ background: var(--line); }
-  .self-btn:disabled{ opacity: 0.5; }
 
-  .overlay{
-    position: fixed; inset:0; background: rgba(46,33,23,0.45);
-    display:none; align-items:flex-end; justify-content:center; z-index:100;
+  /* Glassmorphism Sticky Bottom Bar */
+  .bottom-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 16px 20px calc(16px + env(safe-area-inset-bottom));
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.05);
   }
-  .overlay.show{ display:flex; }
-  .modal{
-    background: var(--paper); width:100%; max-width:480px;
-    border-radius: 20px 20px 0 0; padding: 20px 18px calc(20px + env(safe-area-inset-bottom));
-    max-height: 88vh; overflow-y:auto;
+  .selected-count { flex-shrink: 0; }
+  .selected-count b { color: var(--ink); font-size: 18px; display: block; font-weight: 800; letter-spacing: -0.5px; }
+  .selected-count .total-price { color: var(--maroon); font-weight: 700; font-size: 14px; }
+  
+  .send-btn {
+    flex: 1; background: var(--ink); color: #fff; border: none;
+    border-radius: var(--radius-md); padding: 16px; font-size: 16px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    box-shadow: 0 8px 20px rgba(28, 25, 23, 0.2);
   }
-  .modal h2{ margin:0 0 14px; font-size:18px; }
-  .field{ margin-bottom: 14px; }
-  .field label{ display:block; font-size: 13px; font-weight:600; color: var(--ink-soft); margin-bottom:6px; }
-  .field input, .field select{
-    width:100%; padding: 12px 13px; font-size:16px;
-    border: 1px solid var(--line); border-radius: 12px; background: var(--bg); color: var(--ink);
-  }
-  .row2{ display:flex; gap: 10px; }
-  .row2 .field{ flex:1; }
-  .modal-actions{ display:flex; gap: 10px; margin-top: 6px; }
-  .btn-secondary, .btn-primary{
-    flex:1; padding: 13px; border-radius: 12px; font-size:15px; font-weight:700; border:none;
-  }
-  .btn-secondary{ background: var(--bg); color: var(--ink); border:1px solid var(--line); }
-  .btn-primary{ background: var(--leaf); color:#fff; }
+  .send-btn:disabled { background: var(--line); color: var(--ink-faint); box-shadow: none; pointer-events: none; }
 
-  .history-card{
-    background: var(--bg); border:1px solid var(--line); border-radius:14px;
-    padding: 13px 14px; margin-bottom: 10px;
+  .self-btn {
+    flex-shrink: 0; width: 56px; height: 56px; background: var(--paper); color: var(--ink);
+    border: 2px solid var(--line); border-radius: var(--radius-md); font-size: 22px;
+    display: flex; align-items: center; justify-content: center;
   }
-  .history-top{ display:flex; justify-content:space-between; align-items:center; }
-  .history-date{ font-weight:700; font-size:14.5px; }
-  .history-meta{ font-size:12.5px; color: var(--ink-soft); margin-top:2px; }
-  .history-total{ font-weight:700; color: var(--maroon); font-size:14.5px; }
-  .history-items{ display:none; margin-top:10px; font-size:13px; color: var(--ink); white-space:pre-wrap; line-height:1.6; }
-  .history-items.open{ display:block; }
-  .history-empty{ text-align:center; color: var(--ink-soft); padding: 30px 10px; font-size:14px; }
+  .self-btn:disabled { opacity: 0.5; border-color: var(--line-soft); pointer-events: none; }
 
-  .toast{
-    position: fixed; top: 14px; left:50%; transform: translateX(-50%);
-    background: var(--ink); color:#fff; padding: 10px 18px; border-radius: 30px;
-    font-size: 13.5px; z-index: 200; opacity:0; transition: opacity 0.25s ease; pointer-events:none;
+  /* Modals */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(0, 0, 0, 0);
+    display: flex; align-items: flex-end; justify-content: center; z-index: 100;
+    opacity: 0; pointer-events: none; transition: all 0.3s ease;
   }
-  .toast.show{ opacity:1; }
+  .overlay.show { opacity: 1; pointer-events: auto; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px); }
+  
+  .modal {
+    background: var(--paper); width: 100%; max-width: 500px;
+    border-radius: 32px 32px 0 0; padding: 24px 24px calc(32px + env(safe-area-inset-bottom));
+    max-height: 90vh; overflow-y: auto;
+    transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: var(--shadow-lg);
+  }
+  .overlay.show .modal { transform: translateY(0); }
+  
+  .modal::before {
+    content: ""; display: block; width: 48px; height: 6px; border-radius: 3px;
+    background: var(--line); margin: 0 auto 24px;
+  }
+  .modal h2 { margin: 0 0 20px; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+  
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 13px; font-weight: 700; color: var(--ink-soft); margin-bottom: 8px; }
+  .field input, .field select {
+    width: 100%; padding: 14px 16px; font-size: 16px; font-weight: 500;
+    border: 2px solid var(--line-soft); border-radius: var(--radius-md); background: var(--paper-soft); color: var(--ink);
+    transition: all 0.2s ease;
+  }
+  .field input:focus, .field select:focus { outline: none; border-color: var(--amber); background: var(--paper); }
+  .row2 { display: flex; gap: 12px; }
+  .row2 .field { flex: 1; }
+  
+  .modal-actions { display: flex; gap: 12px; margin-top: 24px; }
+  .btn-secondary, .btn-primary {
+    flex: 1; padding: 16px; border-radius: var(--radius-md); font-size: 16px; font-weight: 700; border: none;
+  }
+  .btn-secondary { background: var(--paper-soft); color: var(--ink); }
+  .btn-primary { background: var(--leaf); color: #fff; box-shadow: 0 8px 20px rgba(21, 128, 61, 0.25); }
+
+  /* Toast Notification */
+  .toast {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-10px) scale(0.95);
+    background: var(--ink); color: #fff; padding: 14px 24px; border-radius: 100px;
+    font-size: 14px; font-weight: 600; z-index: 200; opacity: 0;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); pointer-events: none;
+    box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 8px;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+
+  /* History Cards */
+  .history-card {
+    background: var(--paper); border: 2px solid var(--line-soft); border-radius: var(--radius-lg);
+    padding: 16px 20px; margin-bottom: 12px; transition: border 0.2s ease;
+  }
+  .history-card:active { border-color: var(--line); }
+  .history-top { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+  .history-date { font-weight: 800; font-size: 16px; letter-spacing: -0.3px; }
+  .history-meta { font-size: 13px; color: var(--ink-soft); margin-top: 4px; font-weight: 500; }
+  .history-total { font-weight: 800; color: var(--maroon); font-size: 16px; background: var(--maroon-light); padding: 4px 10px; border-radius: 8px;}
+  .history-items { display: none; margin-top: 16px; font-size: 14px; color: var(--ink-soft); white-space: pre-wrap; line-height: 1.8; font-weight: 500; padding-top: 16px; border-top: 1px dashed var(--line); }
+  .history-items.open { display: block; }
 </style>
 </head>
 <body>
@@ -233,9 +322,9 @@
 
 <div class="overlay" id="overlay">
   <div class="modal">
-    <h2>Add an item</h2>
+    <h2>Add New Item</h2>
     <div class="field">
-      <label>Item name</label>
+      <label>Item Name</label>
       <input id="newName" placeholder="e.g. Toor Dal">
     </div>
     <div class="field">
@@ -280,7 +369,7 @@
   <div class="modal">
     <h2>📜 Order History</h2>
     <div id="historyList"></div>
-    <div class="modal-actions" style="margin-top:6px;">
+    <div class="modal-actions">
       <button class="btn-secondary" id="closeHistory" style="flex:1;">Close</button>
     </div>
   </div>
@@ -290,36 +379,30 @@
   <div class="modal">
     <h2>⚙️ Settings</h2>
     <div class="field">
-      <label>Your WhatsApp number (with country code, no + or spaces)</label>
+      <label>Your WhatsApp number (with country code)</label>
       <input id="myNumberInput" placeholder="e.g. 919876543210" inputmode="numeric">
     </div>
     <div class="modal-actions">
       <button class="btn-primary" id="saveNumberBtn" style="flex:1;">Save number</button>
     </div>
 
-    <div style="height:20px;"></div>
+    <div style="height:24px;"></div>
     <div class="field" style="margin-bottom:8px;">
-      <label>Backup your data</label>
+      <label>Backup & Restore</label>
     </div>
-    <div class="modal-actions" style="margin-top:18px;">
-      <button class="btn-secondary" id="backupBtn" style="flex:1;">⬇️ Download backup</button>
-      <button class="btn-secondary" id="restoreBtn" style="flex:1;">⬆️ Restore backup</button>
+    <div class="modal-actions" style="margin-top:12px;">
+      <button class="btn-secondary" id="backupBtn">⬇️ Backup</button>
+      <button class="btn-secondary" id="restoreBtn">⬆️ Restore</button>
     </div>
     <input type="file" id="restoreFileInput" accept="application/json" style="display:none;">
-    <div style="font-size:12px; color:var(--ink-soft); margin-top:8px; line-height:1.5;">
-      Backup saves your full list, prices and history to a file. If your phone clears site data, use Restore to bring everything back.
-    </div>
 
-    <div style="height:24px; border-top:1px solid var(--line); margin-top:20px;"></div>
-    <div class="field" style="margin-bottom:8px; margin-top:18px;">
-      <label style="color:var(--maroon);">⚠️ Danger zone</label>
+    <div style="height:24px; border-top:1px solid var(--line); margin-top:24px;"></div>
+    <div class="field" style="margin-bottom:12px; margin-top:24px;">
+      <label style="color:var(--maroon);">⚠️ Danger Zone</label>
     </div>
-    <button class="del-btn-full" id="clearAllBtn">🗑️ Clear everything — start fresh</button>
-    <div style="font-size:12px; color:var(--ink-soft); margin-top:8px; line-height:1.5;">
-      This deletes your list, prices, custom items, history and saved number — back to a brand new install. Take a Backup first if unsure.
-    </div>
+    <button class="del-btn-full" id="clearAllBtn">🗑️ Reset Everything</button>
 
-    <div class="modal-actions" style="margin-top:24px;">
+    <div class="modal-actions" style="margin-top:32px;">
       <button class="btn-secondary" id="closeSettings" style="flex:1;">Close</button>
     </div>
   </div>
@@ -327,14 +410,13 @@
 
 <div class="overlay" id="clearConfirmOverlay">
   <div class="modal">
-    <h2>🗑️ Clear everything?</h2>
-    <div style="font-size:14.5px; line-height:1.6; color:var(--ink); margin-bottom:18px;">
-      Your full list, prices, custom items, order history and saved number will all be deleted. The app will restart fresh, like a new install.<br><br>
-      <b>This cannot be undone.</b> Take a Backup first if you're not sure.
+    <h2>🗑️ Reset Everything?</h2>
+    <div style="font-size:15px; line-height:1.6; color:var(--ink-soft); margin-bottom:24px; font-weight:500;">
+      Your full list, prices, custom items, order history and saved number will all be deleted. <b>This cannot be undone.</b>
     </div>
     <div class="modal-actions">
-      <button class="btn-secondary" id="cancelClearAll" style="flex:1;">Cancel</button>
-      <button class="del-btn-full" id="confirmClearAll" style="flex:1;">Yes, delete everything</button>
+      <button class="btn-secondary" id="cancelClearAll">Cancel</button>
+      <button class="del-btn-full" id="confirmClearAll" style="margin:0;">Yes, Delete</button>
     </div>
   </div>
 </div>
@@ -342,10 +424,10 @@
 <div class="overlay" id="genConfirmOverlay">
   <div class="modal">
     <h2 id="genConfirmTitle">Are you sure?</h2>
-    <div id="genConfirmMsg" style="font-size:14.5px; line-height:1.6; color:var(--ink); margin-bottom:18px;"></div>
+    <div id="genConfirmMsg" style="font-size:15px; line-height:1.6; color:var(--ink-soft); margin-bottom:24px; font-weight:500;"></div>
     <div class="modal-actions">
-      <button class="btn-secondary" id="genConfirmNo" style="flex:1;">Cancel</button>
-      <button class="btn-primary" id="genConfirmYes" style="flex:1;">Yes, continue</button>
+      <button class="btn-secondary" id="genConfirmNo">Cancel</button>
+      <button class="btn-primary" id="genConfirmYes">Yes, continue</button>
     </div>
   </div>
 </div>
@@ -364,7 +446,7 @@ let myNumber = loadMyNumber();
 function item(name, brand, qty, unit, price){
   const q = parseFloat(qty) || 0;
   const p = parseFloat(price) || 0;
-  const rate = q > 0 ? p / q : 0; // price per 1 unit, used to auto-scale price when qty changes
+  const rate = q > 0 ? p / q : 0; 
   return {
     name, brand, qty, unit, price: price || '', note:'', checked:false,
     rate,
@@ -374,82 +456,43 @@ function item(name, brand, qty, unit, price){
 
 const DEFAULT_DATA = [
   { name:"Grains, Pulses & Flour", emoji:"🌾", open:false, items:[
-    item("Aata","",10,"kg",480),
-    item("Arhar Dal","",3,"kg",375),
-    item("Moong Dal","",2,"kg",330),
-    item("Chana Dal","",1,"kg",80),
-    item("Masoor Dal","",1,"kg",140),
-    item("Whole Moong","",500,"gm",60),
-    item("Rajma","",250,"gm",45),
-    item("Besan","",500,"gm",70),
-    item("Govind Bhog Rice","",250,"gm",40),
-    item("Chura","",500,"gm",50),
-    item("Suji","",8,"packet",80),
-    item("Rice","",1,"packet",1924),
+    item("Aata","",10,"kg",480), item("Arhar Dal","",3,"kg",375), item("Moong Dal","",2,"kg",330),
+    item("Chana Dal","",1,"kg",80), item("Masoor Dal","",1,"kg",140), item("Whole Moong","",500,"gm",60),
+    item("Rajma","",250,"gm",45), item("Besan","",500,"gm",70), item("Govind Bhog Rice","",250,"gm",40),
+    item("Chura","",500,"gm",50), item("Suji","",8,"packet",80), item("Rice","",1,"packet",1924)
   ]},
   { name:"Oils & Staples", emoji:"🫙", open:false, items:[
-    item("Indian Ghee","",1,"kg",160),
-    item("Mustard/Sarso Oil","",5,"litre",975),
-    item("Refined Oil","",2,"litre",170),
-    item("Til Oil","",1,"litre",150),
-    item("Sugar","",4,"kg",208),
-    item("Tata Salt","",1,"packet",56),
-    item("Black Salt","",200,"gm",46),
-    item("Gur (Jaggery)","",500,"gm",30),
-    item("Honey","Dabur",200,"gm",120),
+    item("Indian Ghee","",1,"kg",160), item("Mustard/Sarso Oil","",5,"litre",975), item("Refined Oil","",2,"litre",170),
+    item("Til Oil","",1,"litre",150), item("Sugar","",4,"kg",208), item("Tata Salt","",1,"packet",56),
+    item("Black Salt","",200,"gm",46), item("Gur (Jaggery)","",500,"gm",30), item("Honey","Dabur",200,"gm",120)
   ]},
   { name:"Spices & Masalas", emoji:"🌶️", open:false, items:[
-    item("Haldi","",250,"gm",80),
-    item("Jeera","",250,"gm",80),
-    item("Golki (Kali Mirch)","",100,"gm",88),
-    item("Dhaniya Powder","",250,"gm",80),
-    item("Red Chilli Powder","",100,"gm",48),
-    item("Kashmiri Powder","",100,"gm",98),
-    item("Chicken Masala","",250,"gm",220),
-    item("Chaat Masala","",50,"gm",42),
-    item("Hing","",1,"packet",92),
-    item("Tej Patta","",1,"packet",10),
-    item("Postu","",100,"gm",160),
+    item("Haldi","",250,"gm",80), item("Jeera","",250,"gm",80), item("Golki (Kali Mirch)","",100,"gm",88),
+    item("Dhaniya Powder","",250,"gm",80), item("Red Chilli Powder","",100,"gm",48), item("Kashmiri Powder","",100,"gm",98),
+    item("Chicken Masala","",250,"gm",220), item("Chaat Masala","",50,"gm",42), item("Hing","",1,"packet",92),
+    item("Tej Patta","",1,"packet",10), item("Postu","",100,"gm",160)
   ]},
   { name:"Tea & Snacks", emoji:"🍪", open:false, items:[
-    item("Tea Leaf","Red Label",1,"packet",100),
-    item("Maggi","",10,"pcs",150),
-    item("Maggi Masala","",5,"pcs",20),
-    item("Pasta","",250,"gm",20),
-    item("Sevai","",4,"packet",88),
-    item("Namkin Biscuit","",4,"packet",126),
-    item("Mitha Biscuit","",2,"packet",76),
-    item("Small Soyabean","",500,"gm",90),
-    item("Papad","Lizzat",1,"packet",80),
+    item("Tea Leaf","Red Label",1,"packet",100), item("Maggi","",10,"pcs",150), item("Maggi Masala","",5,"pcs",20),
+    item("Pasta","",250,"gm",20), item("Sevai","",4,"packet",88), item("Namkin Biscuit","",4,"packet",126),
+    item("Mitha Biscuit","",2,"packet",76), item("Small Soyabean","",500,"gm",90), item("Papad","Lizzat",1,"packet",80)
   ]},
   { name:"Dry Fruits & Health", emoji:"🥜", open:false, items:[
-    item("Kaju","",250,"gm",300),
-    item("Makhana","",500,"gm",550),
-    item("Kishmish","",100,"gm",48),
-    item("Calcium Lactate","",1,"packet",25),
+    item("Kaju","",250,"gm",300), item("Makhana","",500,"gm",550), item("Kishmish","",100,"gm",48), item("Calcium Lactate","",1,"packet",25)
   ]},
-  { name:"Cleaning & Personal Care", emoji:"🧼", open:false, items:[
-    item("Vim Bar","",3,"pcs",144),
-    item("Soap","",6,"pcs",210),
-    item("Cloth Soap","",4,"pcs",38),
-    item("Shampoo","Dove",2,"pcs",334),
-    item("Surf Excel","",5,"kg",660),
-    item("Surf Rin","",1,"kg",115),
-    item("Coconut Oil","",1,"pcs",145),
-    item("Harpic","",2,"pcs",90),
-    item("Mosquito Agarbatti","",5,"packet",50),
-    item("Dhuna","",250,"gm",140),
-    item("Googaldhul","",5,"packet",100),
-    item("Toothpaste","Sensodyne",2,"pcs",430),
+  { name:"Cleaning & Care", emoji:"🧼", open:false, items:[
+    item("Vim Bar","",3,"pcs",144), item("Soap","",6,"pcs",210), item("Cloth Soap","",4,"pcs",38),
+    item("Shampoo","Dove",2,"pcs",334), item("Surf Excel","",5,"kg",660), item("Surf Rin","",1,"kg",115),
+    item("Coconut Oil","",1,"pcs",145), item("Harpic","",2,"pcs",90), item("Mosquito Agarbatti","",5,"packet",50),
+    item("Dhuna","",250,"gm",140), item("Googaldhul","",5,"packet",100), item("Toothpaste","Sensodyne",2,"pcs",430)
   ]},
-  { name:"Others", emoji:"🛒", open:false, items:[] },
+  { name:"Others", emoji:"🛒", open:false, items:[] }
 ];
 
 let data = loadData();
 migrateData();
 let history = loadHistory();
 
-// Generic in-app confirm (more reliable than native confirm() on some phones/standalone apps)
 let confirmCallback = null;
 function showConfirm(title, message, onYes){
   document.getElementById('genConfirmTitle').textContent = title;
@@ -463,13 +506,9 @@ function migrateData(){
   data.forEach(cat => {
     cat.items.forEach(it => {
       if(it.defaultQty === undefined){
-        it.defaultQty = it.qty;
-        it.defaultUnit = it.unit;
-        it.defaultPrice = it.price;
-        const q = parseFloat(it.qty) || 0;
-        const p = parseFloat(it.price) || 0;
-        it.rate = q > 0 ? p / q : 0;
-        changed = true;
+        it.defaultQty = it.qty; it.defaultUnit = it.unit; it.defaultPrice = it.price;
+        const q = parseFloat(it.qty) || 0; const p = parseFloat(it.price) || 0;
+        it.rate = q > 0 ? p / q : 0; changed = true;
       }
     });
   });
@@ -477,19 +516,13 @@ function migrateData(){
 }
 
 function loadData(){
-  try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if(raw) return JSON.parse(raw);
-  }catch(e){}
+  try{ const raw = localStorage.getItem(STORAGE_KEY); if(raw) return JSON.parse(raw); }catch(e){}
   return JSON.parse(JSON.stringify(DEFAULT_DATA));
 }
 function saveData(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }catch(e){} }
 
 function loadHistory(){
-  try{
-    const raw = localStorage.getItem(HISTORY_KEY);
-    if(raw) return JSON.parse(raw);
-  }catch(e){}
+  try{ const raw = localStorage.getItem(HISTORY_KEY); if(raw) return JSON.parse(raw); }catch(e){}
   return [];
 }
 function saveHistory(){ try{ localStorage.setItem(HISTORY_KEY, JSON.stringify(history)); }catch(e){} }
@@ -596,13 +629,12 @@ function render(filterText){
                 <input type="text" class="note-input" value="${escapeHtml(it.note||'')}" data-ci="${ci}" data-ii="${ii}" placeholder="e.g. packet wala">
               </div>
             </div>
-            <button class="del-btn-full" data-ci="${ci}" data-ii="${ii}">✕ Remove this item</button>
+            <button class="del-btn-full" data-ci="${ci}" data-ii="${ii}">✕ Remove</button>
           </div>
         `;
         body.appendChild(row);
       });
     }
-
     main.appendChild(catEl);
   });
 
@@ -621,87 +653,53 @@ function escapeHtml(s){
 function attachListeners(){
   document.querySelectorAll('.cat-head').forEach(el => {
     el.onclick = () => {
-      const ci = +el.dataset.ci;
-      data[ci].open = !data[ci].open;
-      saveData();
-      render(document.getElementById('searchBox').value);
+      const ci = +el.dataset.ci; data[ci].open = !data[ci].open; saveData(); render(document.getElementById('searchBox').value);
     };
   });
   document.querySelectorAll('.chk').forEach(el => {
     el.onchange = () => {
-      const ci = +el.dataset.ci, ii = +el.dataset.ii;
-      data[ci].items[ii].checked = el.checked;
-      saveData();
-      render(document.getElementById('searchBox').value);
+      const ci = +el.dataset.ci, ii = +el.dataset.ii; data[ci].items[ii].checked = el.checked; saveData(); render(document.getElementById('searchBox').value);
     };
   });
   document.querySelectorAll('.qty-input').forEach(el => {
-    el.oninput = () => {
-      const ci = +el.dataset.ci, ii = +el.dataset.ii;
-      data[ci].items[ii].qty = el.value;
-      saveData();
-    };
+    el.oninput = () => { const ci = +el.dataset.ci, ii = +el.dataset.ii; data[ci].items[ii].qty = el.value; saveData(); };
     el.onchange = () => {
-      const ci = +el.dataset.ci, ii = +el.dataset.ii;
-      const it = data[ci].items[ii];
+      const ci = +el.dataset.ci, ii = +el.dataset.ii; const it = data[ci].items[ii];
       if(it.rate > 0){
-        const newQty = parseFloat(it.qty) || 0;
-        it.price = Math.round(it.rate * newQty * 100) / 100;
-        saveData();
-        render(document.getElementById('searchBox').value);
+        const newQty = parseFloat(it.qty) || 0; it.price = Math.round(it.rate * newQty * 100) / 100; saveData(); render(document.getElementById('searchBox').value);
         const btn = document.querySelector(`.expand-btn[data-ci="${ci}"][data-ii="${ii}"]`);
         if(btn){ btn.classList.add('active'); document.getElementById(`sub-${ci}-${ii}`).classList.add('open'); }
       }
     };
   });
   document.querySelectorAll('.unit-select').forEach(el => {
-    el.onchange = () => {
-      const ci = +el.dataset.ci, ii = +el.dataset.ii;
-      data[ci].items[ii].unit = el.value;
-      saveData();
-    };
+    el.onchange = () => { const ci = +el.dataset.ci, ii = +el.dataset.ii; data[ci].items[ii].unit = el.value; saveData(); };
   });
   document.querySelectorAll('.price-input').forEach(el => {
-    el.oninput = () => {
-      const ci = +el.dataset.ci, ii = +el.dataset.ii;
-      data[ci].items[ii].price = el.value;
-      saveData();
-    };
+    el.oninput = () => { const ci = +el.dataset.ci, ii = +el.dataset.ii; data[ci].items[ii].price = el.value; saveData(); };
     el.onchange = () => {
-      const ci = +el.dataset.ci, ii = +el.dataset.ii;
-      const it = data[ci].items[ii];
-      const q = parseFloat(it.qty) || 0;
-      const p = parseFloat(it.price) || 0;
-      it.rate = q > 0 ? p / q : 0; // keep rate in sync so future qty edits scale off this price
-      saveData();
-      render(document.getElementById('searchBox').value);
+      const ci = +el.dataset.ci, ii = +el.dataset.ii; const it = data[ci].items[ii];
+      const q = parseFloat(it.qty) || 0; const p = parseFloat(it.price) || 0;
+      it.rate = q > 0 ? p / q : 0; saveData(); render(document.getElementById('searchBox').value);
       const btn = document.querySelector(`.expand-btn[data-ci="${ci}"][data-ii="${ii}"]`);
       if(btn){ btn.classList.add('active'); document.getElementById(`sub-${ci}-${ii}`).classList.add('open'); }
     };
   });
   document.querySelectorAll('.note-input').forEach(el => {
-    el.oninput = () => {
-      const ci = +el.dataset.ci, ii = +el.dataset.ii;
-      data[ci].items[ii].note = el.value;
-      saveData();
-    };
+    el.oninput = () => { const ci = +el.dataset.ci, ii = +el.dataset.ii; data[ci].items[ii].note = el.value; saveData(); };
   });
   document.querySelectorAll('.expand-btn').forEach(el => {
     el.onclick = () => {
       const ci = el.dataset.ci, ii = el.dataset.ii;
-      const sub = document.getElementById(`sub-${ci}-${ii}`);
-      sub.classList.toggle('open');
+      document.getElementById(`sub-${ci}-${ii}`).classList.toggle('open');
       el.classList.toggle('active');
     };
   });
-  document.querySelectorAll('.del-btn-full').forEach(el => {
+  document.querySelectorAll('#main .del-btn-full').forEach(el => {
     el.onclick = () => {
-      const ci = +el.dataset.ci, ii = +el.dataset.ii;
-      const it = data[ci].items[ii];
+      const ci = +el.dataset.ci, ii = +el.dataset.ii; const it = data[ci].items[ii];
       showConfirm("Remove item?", `Remove "${it.name}" from your list?`, () => {
-        data[ci].items.splice(ii, 1);
-        saveData();
-        render(document.getElementById('searchBox').value);
+        data[ci].items.splice(ii, 1); saveData(); render(document.getElementById('searchBox').value);
       });
     };
   });
@@ -710,32 +708,22 @@ function attachListeners(){
 document.getElementById('searchBox').addEventListener('input', (e) => render(e.target.value));
 
 document.getElementById('resetBtn').onclick = () => {
-  showConfirm("Start a new month?", "This will untick everything, reset quantities & prices back to default, but keep your item list and history.", () => {
+  showConfirm("Start a new month?", "Untick everything, reset quantities & prices to default, but keep your item list and history.", () => {
     data.forEach(cat => cat.items.forEach(it => {
-      it.checked = false;
-      it.qty = it.defaultQty;
-      it.unit = it.defaultUnit;
-      it.price = it.defaultPrice;
+      it.checked = false; it.qty = it.defaultQty; it.unit = it.defaultUnit; it.price = it.defaultPrice;
     }));
-    saveData();
-    render(document.getElementById('searchBox').value);
-    showToast("Ready for a new month ✨");
+    saveData(); render(document.getElementById('searchBox').value); showToast("Ready for a new month ✨");
   });
 };
 
 const overlay = document.getElementById('overlay');
 function populateCategoryDropdown(){
-  const sel = document.getElementById('newCategory');
-  sel.innerHTML = data.map((c, i) => `<option value="${i}">${c.emoji} ${c.name}</option>`).join('');
+  document.getElementById('newCategory').innerHTML = data.map((c, i) => `<option value="${i}">${c.emoji} ${c.name}</option>`).join('');
 }
 document.getElementById('fabAdd').onclick = () => {
-  document.getElementById('newName').value = '';
-  document.getElementById('newBrand').value = '';
-  document.getElementById('newQty').value = '1';
-  document.getElementById('newUnit').value = 'kg';
-  document.getElementById('newPrice').value = '';
-  populateCategoryDropdown();
-  overlay.classList.add('show');
+  document.getElementById('newName').value = ''; document.getElementById('newBrand').value = '';
+  document.getElementById('newQty').value = '1'; document.getElementById('newUnit').value = 'kg';
+  document.getElementById('newPrice').value = ''; populateCategoryDropdown(); overlay.classList.add('show');
   setTimeout(() => document.getElementById('newName').focus(), 100);
 };
 document.getElementById('cancelAdd').onclick = () => overlay.classList.remove('show');
@@ -751,61 +739,39 @@ document.getElementById('confirmAdd').onclick = () => {
   const ci = +document.getElementById('newCategory').value;
 
   const newItem = item(name, brand, qty, unit, price);
-  newItem.checked = true;
-  data[ci].items.push(newItem);
-  data[ci].open = true;
-  saveData();
-  overlay.classList.remove('show');
-  render(document.getElementById('searchBox').value);
-  showToast(`Added "${name}" ✓`);
+  newItem.checked = true; data[ci].items.push(newItem); data[ci].open = true;
+  saveData(); overlay.classList.remove('show'); render(document.getElementById('searchBox').value); showToast(`Added "${name}" ✓`);
 };
 
-// History overlay
 const historyOverlay = document.getElementById('historyOverlay');
-document.getElementById('historyBtn').onclick = () => {
-  renderHistory();
-  historyOverlay.classList.add('show');
-};
+document.getElementById('historyBtn').onclick = () => { renderHistory(); historyOverlay.classList.add('show'); };
 document.getElementById('closeHistory').onclick = () => historyOverlay.classList.remove('show');
 historyOverlay.onclick = (e) => { if(e.target === historyOverlay) historyOverlay.classList.remove('show'); };
 
 function renderHistory(){
   const list = document.getElementById('historyList');
-  if(history.length === 0){
-    list.innerHTML = `<div class="history-empty">No orders sent yet.<br>Your first sent order will show up here.</div>`;
-    return;
-  }
+  if(history.length === 0){ list.innerHTML = `<div class="empty-cat">No orders sent yet.<br>Your first sent order will show up here.</div>`; return; }
   list.innerHTML = '';
   [...history].reverse().forEach((order, idx) => {
     const realIdx = history.length - 1 - idx;
     const d = new Date(order.date);
     const dateStr = d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
-    const card = document.createElement('div');
-    card.className = 'history-card';
+    const card = document.createElement('div'); card.className = 'history-card';
     const itemLines = order.items.map(it => `• ${it.name}${it.brand ? ' ('+it.brand+')' : ''}: ${it.qty} ${it.unit}${it.price ? ' — ' + fmtMoney(it.price) : ''}`).join('\n');
     card.innerHTML = `
       <div class="history-top">
-        <div>
-          <div class="history-date">${dateStr}</div>
-          <div class="history-meta">${order.items.length} items</div>
-        </div>
+        <div><div class="history-date">${dateStr}</div><div class="history-meta">${order.items.length} items</div></div>
         <div class="history-total">${order.total > 0 ? fmtMoney(order.total) : ''}</div>
       </div>
       <div class="history-items" id="hist-${realIdx}">${itemLines}</div>
     `;
-    card.querySelector('.history-top').onclick = () => {
-      document.getElementById(`hist-${realIdx}`).classList.toggle('open');
-    };
+    card.querySelector('.history-top').onclick = () => { document.getElementById(`hist-${realIdx}`).classList.toggle('open'); };
     list.appendChild(card);
   });
 }
 
-// Builds the WhatsApp message text. includeTotal controls whether the price total line is shown.
 function buildMessage(includeTotal){
-  let lines = ["*RATION LIST*", ""];
-  let flatItems = [];
-  let total = 0;
-
+  let lines = ["*RATION LIST*", ""]; let flatItems = []; let total = 0;
   data.forEach(cat => {
     const checked = cat.items.filter(it => it.checked);
     if(checked.length === 0) return;
@@ -813,141 +779,89 @@ function buildMessage(includeTotal){
     checked.forEach(it => {
       const brandPart = it.brand ? ` (${it.brand})` : '';
       lines.push(`• ${it.name}${brandPart}: ${it.qty} ${it.unit}`);
-      const p = parseFloat(it.price);
-      if(!isNaN(p)) total += p;
+      const p = parseFloat(it.price); if(!isNaN(p)) total += p;
       flatItems.push({ category: cat.name, name: it.name, brand: it.brand, qty: it.qty, unit: it.unit, price: it.price });
     });
     lines.push("");
   });
-
   lines.push(`Total Items: ${flatItems.length}`);
   if(includeTotal && total > 0) lines.push(`Estimated Total: ${fmtMoney(total)}`);
-
   return { text: lines.join("\n"), flatItems, total };
 }
 
-// Send to Store — opens WhatsApp contact picker, no price shown
 document.getElementById('sendBtn').onclick = () => {
   const { text, flatItems, total } = buildMessage(false);
-
   history.push({ date: new Date().toISOString(), items: flatItems, total });
   if(history.length > 36) history.shift();
   saveHistory();
-
   window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
   showToast("Order saved to history ✓");
 };
 
-// Send a copy to myself — opens chat with saved number directly, includes price for personal record
 document.getElementById('selfBtn').onclick = () => {
-  if(!myNumber){
-    showToast("Pehle Settings mein apna number save karein");
-    openSettings();
-    return;
-  }
+  if(!myNumber){ showToast("Please save your number in Settings first"); openSettings(); return; }
   const { text } = buildMessage(true);
   window.open(`https://api.whatsapp.com/send?phone=${myNumber}&text=${encodeURIComponent(text)}`, '_blank');
 };
 
 function showToast(msg){
   const t = document.getElementById('toast');
-  t.textContent = msg;
+  t.innerHTML = `<span>✨</span> ${msg}`;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 1800);
+  setTimeout(() => t.classList.remove('show'), 2000);
 }
 
 const clearConfirmOverlay = document.getElementById('clearConfirmOverlay');
-document.getElementById('clearAllBtn').onclick = () => {
-  clearConfirmOverlay.classList.add('show');
-};
+document.getElementById('clearAllBtn').onclick = () => { clearConfirmOverlay.classList.add('show'); };
 document.getElementById('cancelClearAll').onclick = () => clearConfirmOverlay.classList.remove('show');
 clearConfirmOverlay.onclick = (e) => { if(e.target === clearConfirmOverlay) clearConfirmOverlay.classList.remove('show'); };
 document.getElementById('confirmClearAll').onclick = () => {
-  try{
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem(HISTORY_KEY);
-    localStorage.removeItem(MYNUM_KEY);
-  }catch(e){}
+  try{ localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(HISTORY_KEY); localStorage.removeItem(MYNUM_KEY); }catch(e){}
   location.reload();
 };
 
 const genConfirmOverlay = document.getElementById('genConfirmOverlay');
 document.getElementById('genConfirmYes').onclick = () => {
-  genConfirmOverlay.classList.remove('show');
-  if(confirmCallback) confirmCallback();
-  confirmCallback = null;
+  genConfirmOverlay.classList.remove('show'); if(confirmCallback) confirmCallback(); confirmCallback = null;
 };
-document.getElementById('genConfirmNo').onclick = () => {
-  genConfirmOverlay.classList.remove('show');
-  confirmCallback = null;
-};
+document.getElementById('genConfirmNo').onclick = () => { genConfirmOverlay.classList.remove('show'); confirmCallback = null; };
 genConfirmOverlay.onclick = (e) => { if(e.target === genConfirmOverlay){ genConfirmOverlay.classList.remove('show'); confirmCallback = null; } };
 
-// Settings
 const settingsOverlay = document.getElementById('settingsOverlay');
-function openSettings(){
-  document.getElementById('myNumberInput').value = myNumber;
-  settingsOverlay.classList.add('show');
-}
+function openSettings(){ document.getElementById('myNumberInput').value = myNumber; settingsOverlay.classList.add('show'); }
 document.getElementById('settingsBtn').onclick = openSettings;
 document.getElementById('closeSettings').onclick = () => settingsOverlay.classList.remove('show');
 settingsOverlay.onclick = (e) => { if(e.target === settingsOverlay) settingsOverlay.classList.remove('show'); };
 
 document.getElementById('saveNumberBtn').onclick = () => {
   const raw = document.getElementById('myNumberInput').value.replace(/[^0-9]/g, '');
-  if(raw.length < 10){
-    showToast("Sahi number daalein, country code ke saath");
-    return;
-  }
-  myNumber = raw;
-  saveMyNumber(myNumber);
-  showToast("Number save ho gaya ✓");
+  if(raw.length < 10){ showToast("Please enter a valid number with country code"); return; }
+  myNumber = raw; saveMyNumber(myNumber); showToast("Number saved ✓");
 };
 
-// Backup
 document.getElementById('backupBtn').onclick = () => {
   const backup = { data, history, myNumber, exportedAt: new Date().toISOString() };
   const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  const dateStr = new Date().toISOString().slice(0,10);
-  a.href = url;
-  a.download = `ration-backup-${dateStr}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  showToast("Backup download ho gayi ✓");
+  const url = URL.createObjectURL(blob); const a = document.createElement('a');
+  a.href = url; a.download = `ration-backup-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+  showToast("Backup downloaded ✓");
 };
 
-// Restore
-document.getElementById('restoreBtn').onclick = () => {
-  document.getElementById('restoreFileInput').click();
-};
+document.getElementById('restoreBtn').onclick = () => { document.getElementById('restoreFileInput').click(); };
 document.getElementById('restoreFileInput').onchange = (e) => {
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
+  const file = e.target.files[0]; if(!file) return; const reader = new FileReader();
   reader.onload = () => {
     try{
-      const backup = JSON.parse(reader.result);
-      if(!backup.data){ throw new Error('invalid'); }
-      showConfirm("Restore backup?", "This will replace your current list, prices and history with the data from this backup file. Continue?", () => {
-        data = backup.data;
-        history = backup.history || [];
-        myNumber = backup.myNumber || '';
-        migrateData();
-        saveData(); saveHistory(); saveMyNumber(myNumber);
-        render(document.getElementById('searchBox').value);
-        settingsOverlay.classList.remove('show');
-        showToast("Data restore ho gaya ✓");
+      const backup = JSON.parse(reader.result); if(!backup.data) throw new Error('invalid');
+      showConfirm("Restore backup?", "This will replace current data with the backup.", () => {
+        data = backup.data; history = backup.history || []; myNumber = backup.myNumber || '';
+        migrateData(); saveData(); saveHistory(); saveMyNumber(myNumber);
+        render(document.getElementById('searchBox').value); settingsOverlay.classList.remove('show'); showToast("Data restored ✓");
       });
-    }catch(err){
-      showToast("Ye file valid backup nahi hai");
-    }
+    }catch(err){ showToast("Invalid backup file"); }
   };
-  reader.readAsText(file);
-  e.target.value = '';
+  reader.readAsText(file); e.target.value = '';
 };
 
 setMonthLabel();
